@@ -27,9 +27,7 @@ for i, data in enumerate(test_data):
     final_output.append(output)
     # preds = final_output.cpu().data.max(1, keepdim=True)[1]
 result = torch.cat(final_output, dim=1) 
-    # 
 
-    
 print(len(result))
 
 # submission_df = pd.read_csv(os.path.join(config.submission_path(), "sample_submission.csv"))
