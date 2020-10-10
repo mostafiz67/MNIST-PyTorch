@@ -22,14 +22,20 @@ print(len(test_data))
 final_output = []
 for i, data in enumerate(test_data):
     data = data.unsqueeze(1)
-    output = model(data)
-    
-    final_output.append(output)
-    # preds = final_output.cpu().data.max(1, keepdim=True)[1]
-result = torch.cat(final_output, dim=1) 
+    output = model(data).cpu().detach().numpy()
+    data = None
 
-print(len(result))
+    final_output.append(output)
+result = np.concatenate(final_output)
+
+print((result))
 
 # submission_df = pd.read_csv(os.path.join(config.submission_path(), "sample_submission.csv"))
-# submission_df['Label'] = preds.numpy().squeeze()
+# submission_df['Label'] = result.tolist()
 # submission_df.head()
+
+# submission_df = pd.read_csv(os.path.join(config.submission_path(), "sample.csv"))
+
+
+# pd.DataFrame(result).to_csv("Dropbox/MNIST-PT/submission/sample.csv")
+
