@@ -20,22 +20,17 @@ test_data = preprocess.load_test_data()
 print(len(test_data))
 
 final_output = []
+test_preds = torch.LongTensor()
 for i, data in enumerate(test_data):
     data = data.unsqueeze(1)
-    output = model(data).cpu().detach().numpy()
-    data = None
+    output = model(data)
+    preds = output.cpu().data.max(1, keepdim=True)[1]
+    test_preds = torch.cat((test_preds, preds), dim=0)
 
-    final_output.append(output)
-result = np.concatenate(final_output)
+print((test_preds))
 
-print((result))
-
-# submission_df = pd.read_csv(os.path.join(config.submission_path(), "sample_submission.csv"))
-# submission_df['Label'] = result.tolist()
-# submission_df.head()
-
-# submission_df = pd.read_csv(os.path.join(config.submission_path(), "sample.csv"))
-
-
-# pd.DataFrame(result).to_csv("Dropbox/MNIST-PT/submission/sample.csv")
+submission_df = pd.read_csv('Dropbox/MNIST-PT/submission/sample_submission.csv')
+submission_df.head()
+submission_df['Label'] = test_preds.numpy().squeeze()
+submission_df.head()
 
